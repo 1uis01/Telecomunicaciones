@@ -1,0 +1,12 @@
+../drivers/fsl_enet.h:1256:20:ENET_ActiveRead	16	static
+C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_enet_txrx_transfer\component\phy/fsl_phy.h:200:24:PHY_Init	16	static
+C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_enet_txrx_transfer\component\phy/fsl_phy.h:277:24:PHY_GetAutoNegotiationStatus	16	static
+C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_enet_txrx_transfer\component\phy/fsl_phy.h:292:24:PHY_GetLinkStatus	16	static
+C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_enet_txrx_transfer\component\phy/fsl_phy.h:309:24:PHY_GetLinkSpeedDuplex	24	static
+../drivers/fsl_crc.h:169:24:CRC_Get32bitResult	16	static
+../drivers/comunicacion.c:60:7:InitCrc32	32	static
+../drivers/comunicacion.c:74:10:anadirPadding	24	static
+../drivers/comunicacion.c:102:6:receive	112	dynamic
+../drivers/comunicacion.c:175:6:send	1104	static
+../drivers/comunicacion.c:208:6:ENET_BuildBroadCastFrame	32	static
+../drivers/comunicacion.c:231:6:envioInit	176	static
