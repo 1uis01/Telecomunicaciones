@@ -1,6 +1,6 @@
-C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_enet_txrx_transfer\component\els_pkc\src\comps\mcuxClEls\inc/internal/mcuxClEls_Internal.h:163:24:mcuxClEls_getSfrField	24	static
-C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_enet_txrx_transfer\component\els_pkc\src\comps\mcuxClEls\inc/internal/mcuxClEls_Internal.h:170:20:mcuxClEls_setSfrField	32	static
-C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_enet_txrx_transfer\component\els_pkc\src\comps\mcuxClEls\inc/internal/mcuxClEls_Internal.h:182:20:mcuxClEls_isBusy	4	static
+C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_lwip_mqtt_freertos\component\els_pkc\src\comps\mcuxClEls\inc/internal/mcuxClEls_Internal.h:163:24:mcuxClEls_getSfrField	24	static
+C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_lwip_mqtt_freertos\component\els_pkc\src\comps\mcuxClEls\inc/internal/mcuxClEls_Internal.h:170:20:mcuxClEls_setSfrField	32	static
+C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_lwip_mqtt_freertos\component\els_pkc\src\comps\mcuxClEls\inc/internal/mcuxClEls_Internal.h:182:20:mcuxClEls_isBusy	4	static
 ../component/els_pkc/src/comps/mcuxClEls/src/mcuxClEls_Common.c:27:63:mcuxClEls_GetHwVersion	40	static
 ../component/els_pkc/src/comps/mcuxClEls/src/mcuxClEls_Common.c:47:63:mcuxClEls_GetHwConfig	32	static
 ../component/els_pkc/src/comps/mcuxClEls/src/mcuxClEls_Common.c:57:63:mcuxClEls_GetHwState	32	static

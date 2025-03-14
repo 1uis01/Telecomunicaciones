@@ -1,0 +1,12 @@
+C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_lwip_mqtt_freertos\drivers/fsl_gpio.h:153:20:GPIO_PinWrite	24	static
+../source/mqtt_freertos.c:121:13:mqtt_topic_subscribed_cb	24	static
+../source/mqtt_freertos.c:138:13:mqtt_incoming_publish_cb	32	static
+../source/mqtt_freertos.c:150:13:mqtt_incoming_data_cb	32	static
+../source/mqtt_freertos.c:192:13:mqtt_subscribe_topics	56	static
+../source/mqtt_freertos.c:220:13:mqtt_connection_cb	32	static
+../source/mqtt_freertos.c:266:13:connect_to_mqtt	24	static
+../source/mqtt_freertos.c:279:13:mqtt_message_published_cb	16	static
+../source/mqtt_freertos.c:296:13:publish_message	48	static
+../source/mqtt_freertos.c:361:13:app_thread	32	static
+../source/mqtt_freertos.c:696:13:generate_client_id	56	static
+../source/mqtt_freertos.c:757:6:mqtt_freertos_run_thread	24	static
