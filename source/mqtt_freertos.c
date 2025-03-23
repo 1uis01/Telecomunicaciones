@@ -28,7 +28,8 @@
 
 /*! @brief MQTT server host name or IP address. */
 #ifndef EXAMPLE_MQTT_SERVER_HOST
-#define EXAMPLE_MQTT_SERVER_HOST "broker.emqx.io"
+//#define EXAMPLE_MQTT_SERVER_HOST "broker.emqx.io"
+#define EXAMPLE_MQTT_SERVER_HOST "broker.hivemq.com"
 #endif
 
 /*! @brief MQTT server port number. */
@@ -139,8 +140,8 @@ static void mqtt_incoming_publish_cb(void *arg, const char *topic, u32_t tot_len
 {
     LWIP_UNUSED_ARG(arg);
 
-    msg._topic = topic;
-    msg._topic[strlen(topic)] = '\0';
+    //msg._topic = topic;
+    //msg._topic[strlen(topic)] = '\0';
     PRINTF("Received %u bytes from the topic %s: ", tot_len, topic);
 }
 
@@ -150,17 +151,18 @@ static void mqtt_incoming_publish_cb(void *arg, const char *topic, u32_t tot_len
 static void mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags)
 {
     int i;
+    char messag[15];
 
     LWIP_UNUSED_ARG(arg);
+    //PRINTF("ENTRO VERDE");
 
     for (i = 0; i < len; i++)
     {
-
-
             PRINTF("%c", data[i]);
-
+            messag[i] = (char)data[i];
     }
-    strcpy(data,msg._message);
+
+    messag[len] = '\0';
     //msg._message = data;
     //msg._message[len+1] = '\0';
     //PRINTF("%s",msg._message);
@@ -172,17 +174,17 @@ static void mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t f
 
     mqtt_flag = true;
 
-    if(strcmp(data,"poste1")==0)
+    if(strcmp(messag,"poste1")==0)
     	sensorPoste1 = true;
-    if(strcmp(data,"poste2")==0)
+    if(strcmp(messag,"poste2")==0)
         sensorPoste2 = true;
-    if(strcmp(data,"verde")==0)
+    if(strcmp(messag,"verde")==0)
             semaforo2 = true;
-    if(strcmp(data,"bloqueado")==0)
+    if(strcmp(messag,"bloqueado")==0)
             pasoDeCebra = true;
-    if(strcmp(data,"desbloqueado")==0)
+    if(strcmp(messag,"desbloqueado")==0)
                 pasoDeCebra = false;
-    if(strcmp(data,"detener")==0)
+    if(strcmp(messag,"detener")==0)
                 sincronizar = true;
 }
 
@@ -417,24 +419,27 @@ static void app_thread(void *arg)
     semaforo2 = true;
     sensorPoste1 = false;
     sensorPoste2 = false;
+    pasoDeCebra = false;
 
     while(1)
     {
-    	if (sensorPoste1){
+    	if (sensorPoste1 || sensorPoste2){
 
     		if(!semaforo1 && !semaforo2)
     		{
 
-    			while(!sensorPoste2 || tiempo)
-    			{
+    			//while(!sensorPoste2 || (tiempo>0))
+    			//{
 
-    				if (connected && tiempo)
+    				if (connected)
     				{           mensaje = 5;
     							err = tcpip_callback(publish_message, NULL);
     					    	if (err != ERR_OK){
     					    		PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
     					    	}
     					    	sys_msleep(1000U);
+
+    					    	//for (int i = 0; i < 100000; i++)
 
     							while(pasoDeCebra)
     							{   mensaje = 1;
@@ -444,8 +449,55 @@ static void app_thread(void *arg)
     								}
     						        sys_msleep(1000U);
 
+    						        mensaje = 5;
+    						        err = tcpip_callback(publish_message, NULL);
+    						        if (err != ERR_OK){
+    						            PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
+    						        }
+    						        sys_msleep(1000U);
+
     							}
+    							mensaje = 6;
+    							err = tcpip_callback(publish_message, NULL);
+    							if (err != ERR_OK){
+    							    PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
+    							}
+    							sys_msleep(1000U);
+
     							mensaje = 2;
+    							err = tcpip_callback(publish_message, NULL);
+    							if (err != ERR_OK){
+    							    PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
+    							}
+    							sys_msleep(1000U);
+
+    							while(tiempo > 1)
+    							     tiempo--;
+
+    							mensaje = 3;
+
+    							err = tcpip_callback(publish_message, NULL);
+    							if (err != ERR_OK){
+    							    PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
+    							}
+    							sys_msleep(5000U);
+    							tiempo = 10000000;
+    							tiempo1 = 10000000;
+    							tiempo2 = 10000000;
+    							sensorPoste1 = false;
+    							sensorPoste2 = false;
+
+    							GPIO_PinWrite(GPIO, 0U, 1U, 1U); //rojo1
+    							GPIO_PinWrite(GPIO, 0U, 6U, 0U); //rojo2
+
+    							GPIO_PinWrite(GPIO, 0U, 12U, 0U); //verde 1
+    							GPIO_PinWrite(GPIO, 0U, 7U, 1U);  //verde 2
+
+    							semaforo1 = true;
+    							semaforo2 = true;
+    							sincronizar = false;
+
+    							mensaje = 9;
     							err = tcpip_callback(publish_message, NULL);
     							if (err != ERR_OK){
     							    PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
@@ -454,40 +506,11 @@ static void app_thread(void *arg)
 
     				}
 
-    				else if(connected && !tiempo){
-    					mensaje = 3;
-    					err = tcpip_callback(publish_message, NULL);
-    					if (err != ERR_OK){
-    					    PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
-    					}
-    					sys_msleep(5000U);
-    					tiempo = 10000001;
-    					tiempo1 = 10000000;
-    					tiempo2 = 10000000;
-    					sensorPoste1 = false;
-    					sensorPoste2 = false;
 
-    					GPIO_PinWrite(GPIO, 0U, 1U, 1U); //rojo1
-    					GPIO_PinWrite(GPIO, 0U, 6U, 0U); //rojo2
 
-    					GPIO_PinWrite(GPIO, 0U, 12U, 0U); //verde 1
-    					GPIO_PinWrite(GPIO, 0U, 7U, 1U);  //verde 2
+    				//tiempo--;
 
-    					semaforo1 = true;
-    					semaforo2 = true;
-    					sincronizar = false;
-
-    					mensaje = 9;
-    					err = tcpip_callback(publish_message, NULL);
-    					if (err != ERR_OK){
-    					   PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
-    					}
-    					sys_msleep(1000U);
-    				}
-
-    				tiempo--;
-
-    			}
+    			//}
 
 
     		}
@@ -502,109 +525,18 @@ static void app_thread(void *arg)
     			    }
     			    sys_msleep(1000U);
     			}
+    			while(tiempo1 > 1)
     			tiempo1--;
     		}
 
-    		if(!semaforo1 && semaforo2){
+    		/*if(!semaforo1 && semaforo2){
     			tiempo2--;
-    		}
+    		}*/
 
 
 
-    	} // fin de sensorposte1
+    	} // fin de sensorposte
 
-    	if (sensorPoste2){
-
-    	    		if(!semaforo1 && !semaforo2)
-    	    		{
-
-    	    			while(!sensorPoste1 || tiempo)
-    	    			{
-
-    	    				if (connected && tiempo)
-    	    				{           mensaje = 5;
-    	    							err = tcpip_callback(publish_message, NULL);
-    	    					    	if (err != ERR_OK){
-    	    					    		PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
-    	    					    	}
-    	    					    	sys_msleep(1000U);
-
-    	    							while(pasoDeCebra)
-    	    							{   mensaje = 1;
-    	    								err = tcpip_callback(publish_message, NULL);
-    	    						        if (err != ERR_OK){
-    	    								    PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
-    	    								}
-    	    						        sys_msleep(1000U);
-
-    	    							}
-    	    							mensaje = 2;
-    	    							err = tcpip_callback(publish_message, NULL);
-    	    							if (err != ERR_OK){
-    	    							    PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
-    	    							}
-    	    							sys_msleep(1000U);
-
-    	    				}
-
-    	    				else if(connected && !tiempo){
-    	    					mensaje = 3;
-    	    					err = tcpip_callback(publish_message, NULL);
-    	    					if (err != ERR_OK){
-    	    					    PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
-    	    					}
-    	    					sys_msleep(5000U);
-    	    					tiempo = 10000001;
-    	    					tiempo1 = 10000000;
-    	    					tiempo2 = 10000000;
-    	    					sensorPoste1 = false;
-    	    					sensorPoste2 = false;
-
-    	    					GPIO_PinWrite(GPIO, 0U, 1U, 1U); //rojo1
-    	    					GPIO_PinWrite(GPIO, 0U, 6U, 0U); //rojo2
-
-    	    					GPIO_PinWrite(GPIO, 0U, 12U, 0U); //verde 1
-    	    					GPIO_PinWrite(GPIO, 0U, 7U, 1U);  //verde 2
-
-    	    					semaforo1 = true;
-    	    					semaforo2 = true;
-    	    					sincronizar = false;
-
-    	    					mensaje = 9;
-    	    					err = tcpip_callback(publish_message, NULL);
-    	    					if (err != ERR_OK){
-    	    					    PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
-    	    					}
-    	    					sys_msleep(1000U);
-    	    				}
-
-    	    				tiempo--;
-
-    	    			}
-
-
-    	    		}
-
-    	    		if(semaforo1 && !semaforo2){
-
-    	    			if (connected)
-    	    			{   mensaje = 7;
-    	    			    err = tcpip_callback(publish_message, NULL);
-    	    			    if (err != ERR_OK){
-    	    			    	PRINTF("Failed to invoke publishing of a message on the tcpip_thread: %d.\r\n", err);
-    	    			    }
-    	    			    sys_msleep(1000U);
-    	    			}
-    	    			tiempo1--;
-    	    		}
-
-    	    		if(!semaforo1 && semaforo2){
-    	    		    tiempo2--;
-    	    		}
-
-
-
-    	    	} // fin de sensorposte2
 
     	if(semaforo1 && (tiempo1 <= 0)){
 
