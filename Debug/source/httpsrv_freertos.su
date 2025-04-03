@@ -1,0 +1,2 @@
+../source/httpsrv_freertos.c:72:13:http_srv_txt	16	static
+../source/httpsrv_freertos.c:80:6:http_server_enable_mdns	32	static

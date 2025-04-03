@@ -1,5 +1,5 @@
-C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_enet_txrx_transfer\CMSIS/core_cm33.h:2327:22:__NVIC_SetPriorityGrouping	24	static
-C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_enet_txrx_transfer\CMSIS/core_cm33.h:2346:26:__NVIC_GetPriorityGrouping	4	static
+C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_wifi_webconfig\CMSIS/core_cm33.h:2327:22:__NVIC_SetPriorityGrouping	24	static
+C:\Users\Aloncho\Documents\MCUXpressoIDE_24.12.148\workspace\frdmrw612_wifi_webconfig\CMSIS/core_cm33.h:2346:26:__NVIC_GetPriorityGrouping	4	static
 ../drivers/fsl_common_arm.h:897:24:DisableGlobalIRQ	16	static
 ../drivers/fsl_common_arm.h:923:20:EnableGlobalIRQ	24	static
 ../drivers/fsl_power.c:567:6:POWER_SetSleepMode	16	static
